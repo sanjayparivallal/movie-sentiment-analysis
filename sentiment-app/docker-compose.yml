@@ -1,0 +1,21 @@
+services:
+  backend:
+    build: ./backend
+    container_name: marquee-backend
+    environment:
+      CORS_ORIGINS: "http://localhost:3000,http://localhost:5173"
+      PAD_SIDE: "pre"          # must match how the notebook padded sequences
+      ADD_START_TOKEN: "1"     # Keras IMDB sequences begin with a start token
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: marquee-frontend
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "3000:80"
+    restart: unless-stopped

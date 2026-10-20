@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@theme {
+  --color-night: #0d0a12;
+  --color-panel: #16111e;
+  --color-raised: #1f1829;
+  --color-line: #2d2439;
+  --color-ink: #eee8f4;
+  --color-mute: #9b90b0;
+  --color-gold: #ffc24b;
+  --color-dusk: #7c8cff;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Instrument Sans", system-ui, sans-serif;
+}
+
+/* The page glow follows the verdict; registering the property lets it fade. */
+@property --glow {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #7c8cff;
+}
+
+:root {
+  --glow: #7c8cff;
+  transition: --glow 0.9s ease;
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  min-height: 100vh;
+  background:
+    radial-gradient(70rem 34rem at 50% -10%, color-mix(in oklab, var(--glow) 22%, transparent), transparent 70%),
+    var(--color-night);
+  background-attachment: fixed;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Marquee bulbs */
+.bulbs {
+  display: grid;
+  gap: 6px;
+}
+.bulb {
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  background: #231c2e;
+  box-shadow: inset 0 0 0 1px #2f2640;
+  transition:
+    background 0.35s ease,
+    box-shadow 0.35s ease;
+}
+.bulb[data-on="true"] {
+  background: var(--c);
+  box-shadow:
+    0 0 12px 2px color-mix(in oklab, var(--c) 65%, transparent),
+    inset 0 0 0 1px color-mix(in oklab, var(--c) 70%, white);
+}
+.bulbs.is-busy .bulb {
+  animation: chase 1.1s ease-in-out infinite;
+  animation-delay: var(--d);
+}
+@keyframes chase {
+  0%, 100% { background: #231c2e; box-shadow: inset 0 0 0 1px #2f2640; }
+  45% { background: #8a78b5; box-shadow: 0 0 10px 1px #8a78b577; }
+}
+
+.word {
+  border-radius: 6px;
+  padding: 1px 3px;
+  margin: 0 -1px;
+  transition: background 0.5s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
